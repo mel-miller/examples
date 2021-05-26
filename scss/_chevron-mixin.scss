@@ -1,0 +1,111 @@
+// Chevron.
+// $direction options = up, down, left, or right.
+// $size is unitless, but will be converted to px.
+@mixin chevron($direction, $color, $size) {
+  display: inline-block;
+  position: relative;
+  width: calc(#{$size} * 1px);
+  height: calc(#{$size} * 1px);
+
+  $inner-size: calc((#{$size} / 1.6) * 1px);
+  $radius: calc((#{$size} / 16) * 1px);
+  $line-length: 100%;
+  $line-thickness: 13.5%;
+  $line-spacing: calc((#{$size} * 0.4) * 1px);
+
+  &:before,
+  &:after {
+    content: '';
+    position: absolute;
+    background: $color;
+    border-radius: $radius;
+    display: block;
+    height: 0;
+    width: 0;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+  }
+
+  @if $size >= 12 and $size <= 48 {
+    @if $direction == up {
+      height: $inner-size;
+      &:before,
+      &:after {
+        height: $line-length;
+        width: $line-thickness;
+      }
+      &:before {
+        left: $line-spacing;
+        transform: rotate(-45deg);
+      }
+      &:after {
+        right: $line-spacing;
+        transform: rotate(45deg);
+      }
+    } @else if $direction == down {
+      height: $inner-size;
+      &:before,
+      &:after {
+        height: $line-length;
+        width: $line-thickness;
+      }
+      &:before {
+        left: $line-spacing;
+        transform: rotate(45deg);
+      }
+      &:after {
+        right: $line-spacing;
+        transform: rotate(-45deg);
+      }
+    } @else if $direction == left {
+      width: $inner-size;
+      &:before,
+      &:after {
+        height: $line-thickness;
+        width: $line-length;
+      }
+      &:before {
+        top: $line-spacing;
+        transform: rotate(45deg);
+      }
+      &:after {
+        bottom: $line-spacing;
+        transform: rotate(-45deg);
+      }
+    } @else if $direction == right {
+      width: $inner-size;
+      &:before,
+      &:after {
+        height: $line-thickness;
+        width: $line-length;
+      }
+      &:before {
+        top: $line-spacing;
+        transform: rotate(-45deg);
+      }
+      &:after {
+        bottom: $line-spacing;
+        transform: rotate(45deg);
+      }
+    } @else {
+      @error "Unknown direction #{$direction} for chevron.";
+    }
+  } @else {
+    @error "Chevrons must be between size 12 and 48.";
+  }
+}
+
+.#{$prefix}-chevron--up {
+  @include chevron($direction: up, $color: $scarlet, $size: 16);
+}
+.#{$prefix}-chevron--down {
+  @include chevron($direction: down, $color: $scarlet, $size: 16);
+}
+.#{$prefix}-chevron--left {
+  @include chevron($direction: left, $color: $scarlet, $size: 16);
+}
+.#{$prefix}-chevron--right {
+  @include chevron($direction: right, $color: $scarlet, $size: 16);
+}
